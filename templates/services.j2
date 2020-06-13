@@ -1,0 +1,59 @@
+{% extends 'menu.html' %}
+{% set active_page = 'services' %}
+
+{% block content %}
+
+{% set ns = namespace() %}
+{% set ns.old_host = '' %}
+{% set ns.host = '' %}
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+  Select scan date
+  <span class="caret"></span></button>
+  <ul class="dropdown-menu">
+    {% for sdate in scan_dates %}
+        <li><a class="dropdown-item" href="{{ url_for('services', timestamp=sdate) }}">{{ scan_dates[sdate] }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+<br/>
+
+<center><b>
+{% if scan_date == '0' %}
+    Latest scan result:
+{% else %}
+    Scan result from {{ scan_date }}
+{% endif %}
+<br/></b></center>
+
+<table class="table table-hover">
+    {% for service in all_services %}
+        {% set ns.host = all_hosts[service[0]] %}
+        {% if ns.old_host != ns.host %}
+            {% set ns.old_host = ns.host %}
+            <thead><tr><th colspan="4">
+            <a href="{{ url_for('single_host', hostid=ns.host[0]) }}">{{ ns.host[1] }}</a> ({{ ns.host[2] }})
+            </th></tr></thead>
+        {% endif %}
+    <tr>
+        <td>{{ service[2] }}</td>
+        <td>{{ service[3] }}</td>
+        <td>{{ service[4] }}</td>
+        <td>{{ service[5] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+    <div class="col-md-3"></div>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'menu.html' %}
+{% set active_page = 'hosts' %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+
+{% set host_name = '(no hostname)' %}
+{% if host[2] != '-' %}
+    {% set host_name = '(' + host[2] + ')' %}
+{% endif %}
+
+<h3>{{ host[1] }} {{ host_name }}</h3>
+
+<br/><b>Last scan:</b> {{ last_scan_date }}<br/>
+<table class="table table-hover">
+    {% for service in last_scan %}
+    <tr>
+        <td>{{ service[2] }}</td>
+        <td>{{ service[3] }}</td>
+        <td>{{ service[4] }}</td>
+        <td>{{ service[5] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<b>All diffs:</b><br/>
+{% for diff in diff_history %}
+<table class="table table-hover">
+<tr>
+    {% if diff[3] is none %}
+       {% set comment = '' %}
+    {% else %}
+      {% set comment = diff[3] %}
+    {% endif %}
+
+    <td style="width:3  0%"><b>{{ diff[4] }}:</b><br/>{{ diff[2] }}</td>
+    <td>
+    <b>comment:</b> <a href="{{ url_for('do_comment', hostid=diff[0], timestamp=diff[1]) }}">
+    {% if comment|length > 1 %}
+        edit
+    {% else %}
+        add
+    {% endif %}
+    </a><br/>
+    {{ comment }}
+    </td>
+</tr>
+</table>
+{% endfor %}
+
+    <div class="col-md-3"></div>
+
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+[Unit]
+Description=nmap snapshotter web service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/local/share/nsnap/nsnap-web.py
+
+[Install]
+WantedBy=multi-user.target

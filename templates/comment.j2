@@ -1,0 +1,52 @@
+{% extends 'menu.html' %}
+{% set active_page = 'diffs' %}
+
+{% block content %}
+
+<center><b>
+Comment update
+</b></center>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+
+<table class="table table-hover">
+    <thead><tr><th colspan="3">{{ thediff[4] }}</th></tr></thead>
+    <tr>
+        <td></td>
+        <td>
+            <b><a href="{{ url_for('single_host', hostid=host[0]) }}">{{ host[1] }}</a> ({{ host[2] }}):</b><br/>
+            {{ thediff[2] }}
+        </td>
+        <td></td>
+    </tr>
+
+    <tr>
+    <td></td>
+    <td>
+    {% if thediff[3] is none %}
+       {% set comment = '' %}
+    {% else %}
+      {% set comment = thediff[3] %}
+    {% endif %}
+      <form action="{{ url_for('diffs') }}" method="post">
+        <input type="hidden" name="hostid" value="{{ host[0] }}">
+        <input type="hidden" name="timestamp" value="{{ thediff[1] }}">
+        <textarea name="comment" rows="4" cols="50">{{ comment }}</textarea>
+        <input type="submit" value="update">
+      </form>
+    </td>
+    <td></td>
+    </tr>
+
+</table>    
+
+    <div class="col-md-3"></div>
+
+  </div>
+</div>
+{% endblock %}
